@@ -1,13 +1,13 @@
 import mysql.connector
 
 dbconfg = {
-    "host" : "localhost",
-    "user" : "root",
-    "password" : 'Total909090!',
-    "database" : "locadora"
+    "host": "localhost",
+    "user": "root",
+    "password": "Total909090!",
+    "database": "locadora",
 }
 
-# pip install sql-connector-python
+# pip install mysql-connector-python
 
 # cursor = conn.cursor()
 
@@ -21,17 +21,20 @@ def showFilmes():
     cursor.close()
     conn.close()
 
-
     for filme in lista_de_filmes:
         print(filme)
 
-def insertFilme(titulo,genero,ano,preco):
+
+def insertFilme(titulo, genero, ano, preco):
     conn = mysql.connector.connect(**dbconfg)
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO filme(titulo, genero, ano, preco)VALUES('{titulo}','{genero}',{ano},{preco})")
+    cursor.execute(
+        f"INSERT INTO filme(titulo, genero, ano, preco)VALUES('{titulo}','{genero}',{ano},{preco})"
+    )
     conn.commit()
     cursor.close()
     conn.close()
+
 
 def deleteFilme(id):
     conn = mysql.connector.connect(**dbconfg)
@@ -42,18 +45,20 @@ def deleteFilme(id):
     conn.close()
 
 
-def updateFilme(titulo,genero,ano,preco,id):
-
+def updateFilme(titulo, genero, ano, preco, id):
     conn = mysql.connector.connect(**dbconfg)
     cursor = conn.cursor()
-    cursor.execute(f"""
+    cursor.execute(
+        f"""
     UPDATE filme
         set titulo = "{titulo}", genero = "{genero}", ano = '{ano}', preco = '{preco}'
         where id = '{id}';
-""")
+"""
+    )
     conn.commit()
     cursor.close()
     conn.close()
+
 
 def consulta_banco(query):
     conn = mysql.connector.connect(**dbconfg)
@@ -64,6 +69,7 @@ def consulta_banco(query):
     conn.close()
     return lista
 
+
 def bulir_no_banco(query):
     conn = mysql.connector.connect(**dbconfg)
     cursor = conn.cursor()
@@ -72,7 +78,6 @@ def bulir_no_banco(query):
     cursor.close()
     conn.close()
     print("editado com sucesso!")
-   
 
 
 # # Consulta
@@ -89,7 +94,6 @@ def bulir_no_banco(query):
 # bulir_no_banco(bulir_no_banco)
 
 
-
 # showFilmes()
 # # insertFilme("As Branquelas","Comedia",2004,30)
 # # showFilmes()
@@ -101,14 +105,17 @@ def bulir_no_banco(query):
 # showFilmes()
 
 while True:
-    menu = int(input( f"""
+    menu = int(
+        input(
+            f"""
         1-  Vizualizar todos os filmes
         2-  Adicionar um filme
         3-  Editar um filme
         4-  Deletar um film
         0-  Sair
     """
-))
+        )
+    )
     if menu == 0:
         break
 
@@ -116,7 +123,7 @@ while True:
         todos_os_filmes = consulta_banco("SELECT * FROM filme")
         for filme in todos_os_filmes:
             print(filme)
-    
+
     elif menu == 2:
         titulo = str(input("Digite o titulo do filme: "))
         genero = str(input("Digite o genero do filme: "))
@@ -138,9 +145,8 @@ while True:
 """
         bulir_no_banco(query=query)
 
-    elif menu==4:
+    elif menu == 4:
         id = int(input("ID do filme que deseja deletar: "))
 
         query = f"DELETE FROM filme WHERE id='{id}';"
         bulir_no_banco(query)
- 
